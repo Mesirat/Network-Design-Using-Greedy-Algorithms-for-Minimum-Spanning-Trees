@@ -60,3 +60,20 @@ pair<int, vector<Edge>> kruskalMST(int n, vector<Edge>& edges) {
     }
     return {mstWeight, mstEdges};
 }
+
+// Function to generate a Graphviz-compatible .dot file for a graph
+void generateGraphvizFile(const vector<Edge>& edges, const string& filename, bool isMST = false) {
+    ofstream outFile(filename);
+    if (!outFile) {
+        cerr << "Error opening file for writing: " << filename << "\n";
+        return;
+    }
+
+    outFile << "graph " << (isMST ? "MST" : "InputGraph") << " {\n";
+    for (const auto& edge : edges) {
+        outFile << "    " << edge.u << " -- " << edge.v << " [label=\"" << edge.weight << "\"];\n";
+    }
+    outFile << "}\n";
+    outFile.close();
+    cout << (isMST ? "MST" : "Input graph") << " file generated: " << filename << "\n";
+}
