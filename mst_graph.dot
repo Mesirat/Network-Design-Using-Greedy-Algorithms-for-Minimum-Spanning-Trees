@@ -1,0 +1,6 @@
+graph MST {
+    2 -- 3 [label="4"];
+    0 -- 2 [label="5"];
+    1 -- 2 [label="6"];
+    2 -- 4 [label="7"];
+}

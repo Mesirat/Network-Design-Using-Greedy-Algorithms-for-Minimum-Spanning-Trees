@@ -77,3 +77,55 @@ void generateGraphvizFile(const vector<Edge>& edges, const string& filename, boo
     outFile.close();
     cout << (isMST ? "MST" : "Input graph") << " file generated: " << filename << "\n";
 }
+
+int main() {
+    string inputFileName;
+    cout << "Enter the input file name: ";
+    cin >> inputFileName;
+
+    ifstream inputFile(inputFileName);
+    if (!inputFile) {
+        cerr << "Error: Unable to open input file.\n";
+        return 1;
+    }
+
+    int n, m; // Number of nodes (devices or locations) and edges (connections)
+    inputFile >> n >> m;
+
+    vector<Edge> edges(m);
+    for (int i = 0; i < m; i++) {
+        inputFile >> edges[i].u >> edges[i].v >> edges[i].weight;
+    }
+    inputFile.close();
+
+    // Generate the input graph visualization
+    string inputGraphFile = "input_graph.dot";
+    generateGraphvizFile(edges, inputGraphFile);
+
+    // Generate the MST using Kruskal's algorithm
+    auto [mstWeight, mstEdges] = kruskalMST(n, edges);
+
+    // Display the Minimum Spanning Tree details
+    cout << "\nNetwork Design - Minimum Spanning Tree (MST):\n";
+    cout << "Connections in the MST:\n";
+    for (const auto& edge : mstEdges) {
+        cout << "Device " << edge.u << " connected to Device " << edge.v << " with cost " << edge.weight << "\n";
+    }
+    cout << "Total cost of connecting the network: " << mstWeight << "\n";
+
+    // Generate the MST graph visualization
+    string mstGraphFile = "mst_graph.dot";
+    generateGraphvizFile(mstEdges, mstGraphFile, true);
+
+    // Render the graphs as images using Graphviz
+    cout << "Rendering the input graph...\n";
+    system(("dot -Tpng " + inputGraphFile + " -o input_graph.png").c_str()); // Generate input graph image
+    cout << "Rendering the MST graph...\n";
+    system(("dot -Tpng " + mstGraphFile + " -o mst_graph.png").c_str());    // Generate MST graph image
+
+    // Open the images (adjust for your OS)
+    system("input_graph.png");
+    system("mst_graph.png");
+
+    return 0;
+}
