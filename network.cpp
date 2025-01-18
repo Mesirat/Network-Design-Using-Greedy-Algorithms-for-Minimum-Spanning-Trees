@@ -1,15 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <fstream> // For file I/O
-#include <cstdlib> // For system commands
+#include <fstream> 
+#include <cstdlib> 
 
 using namespace std;
 
 // Edge structure for network connections
 struct Edge {
     int u, v;       // Nodes connected by this edge
-    int weight;     // Cost of connection (e.g., cable length or bandwidth cost)
+    int weight;     // Cost of connection 
     bool operator<(const Edge& other) const {
         return weight < other.weight; // Sort edges by weight for greedy approach
     }
