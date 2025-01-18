@@ -44,3 +44,19 @@ struct DSU {
     }
 };
 
+// Kruskal's MST algorithm for network design
+pair<int, vector<Edge>> kruskalMST(int n, vector<Edge>& edges) {
+    sort(edges.begin(), edges.end()); // Sort edges by cost (greedy step)
+    DSU dsu(n);
+
+    int mstWeight = 0; // Total cost of the MST
+    vector<Edge> mstEdges;
+
+    for (const auto& edge : edges) {
+        if (dsu.unionSets(edge.u, edge.v)) { // Connect the nodes if no cycle is formed
+            mstWeight += edge.weight;
+            mstEdges.push_back(edge);
+        }
+    }
+    return {mstWeight, mstEdges};
+}
